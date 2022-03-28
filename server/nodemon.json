@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_USER": "chanturia",
+    "MONGO_PASSWORD": "aRmI11agOPJusptZ",
+    "MONGO_DB": "codeseed"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "short_name": "Code Seed Project",
+  "name": "CodSeed Project",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "270x270",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
