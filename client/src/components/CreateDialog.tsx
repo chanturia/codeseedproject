@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import * as Yup from 'yup';
 import {
     Button, Container,
@@ -12,17 +12,23 @@ import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {useFormik} from "formik";
-import {createPlayer} from "../API";
+import {createPlayer, updatePlayer} from "../API";
 
 type Props = {
     creatDialogStatus: boolean
     handleClose: () => void
     setPlayers: any
-    player?: PlayerI
+    setCurrentPlayer: any
+    currentPlayer?: PlayerI
 }
 
-// @ts-ignore
-const CreatePlayer: React.FC<Props> = ({creatDialogStatus, handleClose, setPlayers, player}) => {
+const CreatePlayer: React.FC<Props> = ({
+                                           creatDialogStatus,
+                                           handleClose,
+                                           setPlayers,
+                                           currentPlayer,
+                                           setCurrentPlayer
+                                       }) => {
     const [dateOfBirthValue, seDateOfBirthValue] = useState<Date | null>(null);
 
     const PlayerValidationSchema = Yup.object().shape({
@@ -59,12 +65,23 @@ const CreatePlayer: React.FC<Props> = ({creatDialogStatus, handleClose, setPlaye
         },
         validationSchema: PlayerValidationSchema,
         onSubmit: (values: PlayerI, actions) => {
-            createPlayer(values)
-                .then(({data: {Players}}) => {
-                    setPlayers(Players)
-                    handleClose()
-                })
-                .catch((err: Error) => console.log(err))
+            if (currentPlayer) {
+                updatePlayer(values)
+                    .then(({data: {Players}}) => {
+                        setPlayers(Players)
+                        setCurrentPlayer(null)
+                        handleClose()
+                    })
+                    .catch((err: Error) => console.log(err))
+            } else {
+                createPlayer(values)
+                    .then(({data: {Players}}) => {
+                        setPlayers(Players)
+                        handleClose()
+                    })
+                    .catch((err: Error) => console.log(err))
+            }
+
             actions.resetForm()
         },
     });
@@ -72,6 +89,17 @@ const CreatePlayer: React.FC<Props> = ({creatDialogStatus, handleClose, setPlaye
     useEffect(() => {
         formik.setFieldValue('dateOfBirth', dateOfBirthValue)
     }, [dateOfBirthValue])
+
+    useEffect(() => {
+        if (currentPlayer) {
+            Object.keys(currentPlayer).map(key => {
+                if (key === "dateOfBirth") {
+                    seDateOfBirthValue(new Date(currentPlayer[key]))
+                }
+                formik.setFieldValue(key, currentPlayer[key])
+            })
+        }
+    }, [currentPlayer])
 
 
     return (

@@ -1,4 +1,6 @@
 interface PlayerI {
+    [key: string]
+
     _id?: string
     name: string
     surname: string

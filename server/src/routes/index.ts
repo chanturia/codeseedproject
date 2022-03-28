@@ -5,7 +5,7 @@ const router: Router = Router()
 
 router.get('/get-players', getPlayers)
 router.post('/create-player', createPlayer)
-router.put('/edit-player/:id', updatePlayer)
+router.put('/update-player/:id', updatePlayer)
 router.delete('/delete-player/:id', deletePlayer)
 
 export default router

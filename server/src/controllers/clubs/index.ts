@@ -28,7 +28,6 @@ const createClub = async (req: Request, res: Response): Promise<void> => {
             dateOfBirth: body.dateOfBirth,
             imageUrl: body.imageUrl,
         })
-        console.log(player)
         await player.save()
         const Players: PlayerI[] = await PlayerModel.find()
 

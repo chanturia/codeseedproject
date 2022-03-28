@@ -12,13 +12,17 @@ import {
     ListItemText, Menu, MenuItem
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {differenceInYears, format, formatDistance} from "date-fns";
+import {differenceInYears, format} from "date-fns";
+import {deletePlayer} from "../API";
 
 type Props = {
     player: PlayerI
+    setCurrentPlayer: (player: PlayerI) => any
+    handleClickOpen: () => void
+    setPlayers: any
 }
 
-const PlayerCard: React.FC<Props> = ({player}) => {
+const PlayerCard: React.FC<Props> = ({player, setPlayers, setCurrentPlayer, handleClickOpen}) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -27,7 +31,19 @@ const PlayerCard: React.FC<Props> = ({player}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    console.log(player)
+    const handleEdit = () => {
+        setCurrentPlayer(player)
+        handleClickOpen()
+        handleClose()
+    };
+    const handleDelete = () => {
+        deletePlayer(player).then(({data: {Players}}) => {
+            setPlayers(Players)
+            handleClose()
+        })
+            .catch((err: Error) => console.log(err))
+        handleClose()
+    };
     return (
         <>
             <Card>
@@ -46,8 +62,8 @@ const PlayerCard: React.FC<Props> = ({player}) => {
                                 open={open}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                                <MenuItem onClick={handleClose}>Delete</MenuItem>
+                                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                                <MenuItem onClick={handleDelete}>Delete</MenuItem>
                             </Menu>
                         </>
                     }

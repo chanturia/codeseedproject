@@ -16,7 +16,6 @@ export const getPlayers = async () => {
 
 export const createPlayer = async (formData: PlayerI) => {
     try {
-        console.log(formData)
         const player: PlayerI = {
             name: formData.name,
             surname: formData.surname,
@@ -35,6 +34,45 @@ export const createPlayer = async (formData: PlayerI) => {
             player
         )
         return createPlayer
+    } catch (error) {
+        // @ts-ignore
+        throw new Error(error)
+    }
+}
+
+export const updatePlayer = async (formData: PlayerI) => {
+    try {
+        const player: PlayerI = {
+            _id: formData._id,
+            name: formData.name,
+            surname: formData.surname,
+            position: formData.position,
+            nationality: formData.nationality,
+            rating: formData.rating,
+            height: formData.height,
+            weight: formData.weight,
+            club: formData.club,
+            tShirtNumber: formData.tShirtNumber,
+            dateOfBirth: formData.dateOfBirth,
+            imageUrl: formData.imageUrl,
+        }
+        const updatedPlayer: AxiosResponse = await axios.put(
+            baseUrl + '/update-player/' + player._id,
+            player
+        )
+        return updatedPlayer
+    } catch (error) {
+        // @ts-ignore
+        throw new Error(error)
+    }
+}
+
+export const deletePlayer = async (formData: PlayerI) => {
+    try {
+        const updatedPlayer: AxiosResponse = await axios.delete(
+            baseUrl + '/delete-player/' + formData._id,
+        )
+        return updatedPlayer
     } catch (error) {
         // @ts-ignore
         throw new Error(error)

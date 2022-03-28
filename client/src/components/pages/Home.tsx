@@ -12,6 +12,7 @@ import CreateDialog from "../CreateDialog";
 const CreatePlayer = () => {
     const [players, setPlayers] = useState<PlayerI[]>([]);
     const [creatDialogStatus, setCreatDialogStatus] = useState(false);
+    const [currentPlayer, setCurrentPlayer] = useState<PlayerI | undefined>();
     const handleClickOpen = () => {
         setCreatDialogStatus(true);
     };
@@ -31,14 +32,23 @@ const CreatePlayer = () => {
                         players && players.map((player) => {
                             return (
                                 <Grid key={player._id} item xs={12} sm={6} md={4}>
-                                    <PlayerCard player={player}/>
+                                    <PlayerCard player={player}
+                                                setCurrentPlayer={setCurrentPlayer}
+                                                handleClickOpen={handleClickOpen}
+                                                setPlayers={setPlayers}/>
                                 </Grid>
                             )
                         })
                     }
                 </Grid>
             </Container>
-            <CreateDialog creatDialogStatus={creatDialogStatus} handleClose={handleClose} setPlayers={setPlayers}/>
+            <CreateDialog
+                creatDialogStatus={creatDialogStatus}
+                handleClose={handleClose}
+                setPlayers={setPlayers}
+                currentPlayer={currentPlayer}
+                setCurrentPlayer={setCurrentPlayer}
+            />
             <Fab sx={{position: 'fixed', bottom: 20, right: 20}}
                  color="primary"
                  aria-label="add Player"
