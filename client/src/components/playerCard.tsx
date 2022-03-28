@@ -57,7 +57,7 @@ const PlayerCard: React.FC<Props> = ({player}) => {
                 <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <Avatar
                         alt={`${player.name} ${player.surname}`}
-                        src={player.imageUrl ? player.imageUrl : "https://cdn.soccerwiki.org/images/player/70860.png"}
+                        src={player.imageUrl ? player.imageUrl : "https://cdn.soccerwiki.org/images/player/missing_player.jpg"}
                         sx={{width: 150, height: 150}}
                     />
                 </Box>
